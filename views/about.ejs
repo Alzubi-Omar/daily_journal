@@ -1,0 +1,40 @@
+<%- include('partials/header') %>
+
+<head>
+  <title>About Page</title>
+  <link rel="stylesheet" href="/styles/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h3 class="about-title">GET CONNECTED</h3>
+    <img
+      class="about-image"
+      src="/imgs/about-page.jpg"
+      alt="sunset at beach"
+      loading="lazy"
+    />
+    <p class="about-par"><%= aboutContent %></p>
+    <h3 class="about-title">Unlock the power of gratitude:</h3>
+    <p class="about-par">
+      We're thrilled to have you! This is your space to connect with others who
+      value gratitude. Explore our online community and Grateful Gatherings to
+      cultivate a more grateful life.
+    </p>
+    <div class="parent-container">
+      <div class="contact-box">
+        <h1 class="Hero">Let's have a chat</h1>
+        <img
+          class="contact-logo"
+          src="/imgs/Logo.jpg"
+          alt="computer screen with mug coffee and a phone on a surface"
+        />
+      </div>
+      <div class="contact-button">
+        <a href="mailto:contact.alzubi@gmail.com">
+          <button>Get in touch</button>
+        </a>
+      </div>
+    </div>
+  </div>
+</body>
+<%- include('partials/footer') %>

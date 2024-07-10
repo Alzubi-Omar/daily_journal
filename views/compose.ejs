@@ -1,0 +1,61 @@
+<%- include('partials/header') %>
+
+<head>
+  <link rel="stylesheet" href="/styles/styles.css" />
+  <title>New Post Page</title>
+</head>
+<body>
+  <div class="container">
+    <form class="form-signin" action="/new_post" method="POST">
+      <!-- Name -->
+      <label for="Name">Name: </label> <br />
+      <input
+        type="text"
+        id="Name"
+        name="postName"
+        class="form-control"
+        required=""
+      />
+      <br />
+      <!-- Password -->
+      <label for="Password">Password: </label> <br />
+      <input
+        class="form-control"
+        type="password"
+        name="password"
+        required=""
+        minlength="6"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+        title="Password must contain at least 6 characters, including one lowercase letter, one uppercase letter, one number and one special character"
+      />
+      <br />
+      <!-- Title -->
+      <label for="Title">Title: </label> <br />
+      <input
+        type="text"
+        id="title"
+        name="postTitle"
+        class="form-control"
+        required=""
+      />
+      <br />
+      <!-- Content -->
+      <label for="Post">Content: </label> <br />
+      <textarea
+        name="postContent"
+        id="postContent"
+        rows="10"
+        class="form-control"
+        required=""
+      ></textarea>
+      <br />
+      <!-- Publish -->
+      <button type="submit" name="button" class="btn btn-primary">
+        Publish
+      </button>
+    </form>
+    <br />
+  </div>
+</body>
+
+<%- include('partials/footer') %>

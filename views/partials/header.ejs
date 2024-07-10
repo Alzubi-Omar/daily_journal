@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Header Section</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/styles/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="title">
+        <img src="/svgs/headerIcon.svg" alt="journal-bookmark-fill" />
+        <a href="/">DAILY JOURNAL</a>
+      </div>
+      <div class="hamburger">
+        <img src="/svgs/listIcon.svg" alt="List icon: hamburger" />
+      </div>
+      <nav class="nav-bar">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/read_all">Blogs</a></li>
+          <li><a href="/new_post">New Post</a></li>
+          <li><a href="/about">About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <script>
+      var hamburger = document.querySelector(".hamburger");
+      hamburger.addEventListener("click", function () {
+        let navbar = document.querySelector(".nav-bar");
+        navbar.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>

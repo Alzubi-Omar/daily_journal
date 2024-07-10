@@ -1,0 +1,63 @@
+<%- include('partials/header') %>
+<head>
+  <link rel="stylesheet" href="/styles/styles.css" />
+  <title>Authentication</title>
+</head>
+
+<body>
+  <div class="container">
+    <% if (route === 'delete') { %>
+    <form
+      class="form-signin"
+      action="/read_all/<%= postId %>/delete"
+      method="post"
+    >
+      <% if (message) { %>
+      <label for="password">
+        <h2><%= message %></h2>
+      </label>
+      <% } %>
+      <!-- Password -->
+      <br />
+      <input class="form-control" type="password" name="password" required="" />
+      <br />
+      <!-- submit -->
+      <input
+        class="btn btn-primary"
+        type="submit"
+        id="submit-button"
+        value="Submit"
+      />
+    </form>
+
+    <% } else if (route === 'edit') { %>
+
+    <form action="/read_all/<%= postId %>/edit" method="post">
+      <% if (message) { %>
+      <label for="password">
+        <h2><%= message %></h2>
+      </label>
+      <br />
+      <% } %>
+      <!-- Password -->
+      <input
+        class="form-control"
+        type="password"
+        name="password"
+        required=""
+        autofocus
+      />
+      <br />
+
+      <!-- submit -->
+      <input
+        class="btn btn-primary"
+        type="submit"
+        id="submit-button"
+        value="submit"
+      />
+    </form>
+    <% } %>
+  </div>
+</body>
+<%- include('partials/footer') %>
