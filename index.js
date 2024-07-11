@@ -1,28 +1,36 @@
 import express from "express";
 import ejs from "ejs";
 import bodyParser from "body-parser";
-import pg from "pg";
+import pg, { Pool } from "pg";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 import "dotenv/config";
 
 const app = express();
 const PORT = 3000;
-const { Client } = pg;
+const { Pool } = pg;
 const saltRounds = 10;
 
-const client = new Client({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
+
+// const client = new Client({
+//   user: process.env.DB_USER,
+//   host: process.env.DB_HOST,
+//   database: process.env.DB_NAME,
+//   password: process.env.DB_PASSWORD,
+//   port: process.env.DB_PORT,
+// });
 
 async function startServer() {
   try {
-    await client.connect();
+    const client = await pool.connect();
     console.log("Connected to the database.");
+    client.release();
   } catch (err) {
     console.error("Failed to connect to the database:", err);
     process.exit(1); // Exit the application if the connection fails
@@ -37,7 +45,7 @@ app.set("view engine", "ejs");
 const aboutContent = "Discover the Power of Gratitude: Join Our Community";
 
 async function fetchAllPosts() {
-  const result = await client.query("SELECT * FROM posts");
+  const result = await Pool.query("SELECT * FROM posts");
   posts = result.rows;
   return posts;
 }
@@ -113,7 +121,7 @@ app.post("/new_post", async (req, res) => {
     // Password Hashing
     const hash = await bcrypt.hash(password, saltRounds);
 
-    const result = await client.query(
+    const result = await Pool.query(
       "INSERT INTO posts(name, passkey, title, content) VALUES($1, $2, $3, $4)",
       [postName, hash, postTitle, postContent]
     );
@@ -121,7 +129,7 @@ app.post("/new_post", async (req, res) => {
     res.redirect("/read_all");
   } catch (error) {
     console.log("Error adding post:", error);
-    await client.query("ROLLBACK");
+    await Pool.query("ROLLBACK");
     res.status(500).send("Failed to add new post");
   }
 });
@@ -130,7 +138,7 @@ app.post("/new_post", async (req, res) => {
 app.get(`/read_all/:id`, async (req, res) => {
   try {
     const { id: postId } = req.params;
-    const result = await client.query("SELECT * FROM posts WHERE id = $1", [
+    const result = await Pool.query("SELECT * FROM posts WHERE id = $1", [
       postId,
     ]);
     const post = result.rows[0];
@@ -150,7 +158,7 @@ app.get(`/read_all/:id`, async (req, res) => {
 app.get("/read_all/:id/edit", async (req, res) => {
   try {
     const { id: postId } = req.params;
-    const result = await client.query("SELECT * FROM posts WHERE id = $1", [
+    const result = await Pool.query("SELECT * FROM posts WHERE id = $1", [
       postId,
     ]);
     const post = result.rows[0];
@@ -175,7 +183,7 @@ app.post("/read_all/:id/edit", async (req, res) => {
 
   try {
     // Fetch post details from database
-    const result = await client.query("SELECT * FROM posts WHERE id = $1", [
+    const result = await Pool.query("SELECT * FROM posts WHERE id = $1", [
       postId,
     ]);
     const post = result.rows[0];
@@ -215,7 +223,7 @@ app.post("/read_all/:id/allow-changes", async (req, res) => {
   try {
     const text = "UPDATE posts SET title = $1, content = $2 WHERE id = $3";
     const values = [Title, Content, postId];
-    const result = await client.query(text, values);
+    const result = await Pool.query(text, values);
 
     if (result.rowCount === 1) {
       res.render("action-success", {
@@ -241,7 +249,7 @@ app.get("/read_all/:id/delete", async (req, res) => {
   const { id: postId } = req.params;
 
   try {
-    const result = await client.query("SELECT * FROM posts WHERE id = $1", [
+    const result = await Pool.query("SELECT * FROM posts WHERE id = $1", [
       postId,
     ]);
     const post = result.rows[0];
@@ -272,7 +280,7 @@ app.post("/read_all/:id/delete", async (req, res) => {
     }
 
     // Fetch post details from database
-    const result = await client.query("SELECT * FROM posts WHERE id = $1", [
+    const result = await Pool.query("SELECT * FROM posts WHERE id = $1", [
       postId,
     ]);
     const post = result.rows[0];
@@ -296,7 +304,7 @@ app.post("/read_all/:id/delete", async (req, res) => {
     const passwordMatch = await bcrypt.compare(submittedPassword, post.passkey);
 
     if (passwordMatch) {
-      await client.query("DELETE FROM posts WHERE id = $1", [postId]);
+      await Pool.query("DELETE FROM posts WHERE id = $1", [postId]);
       console.log("Authentication successful.");
 
       // Successful deletion
