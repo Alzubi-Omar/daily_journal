@@ -1,7 +1,7 @@
 import express from "express";
 import ejs from "ejs";
 import bodyParser from "body-parser";
-import pg, { Pool } from "pg";
+import pg from "pg";
 import bcrypt from "bcrypt";
 import _ from "lodash";
 import "dotenv/config";
@@ -9,6 +9,7 @@ import "dotenv/config";
 const app = express();
 const PORT = 3000;
 const saltRounds = 10;
+const { Pool } = pg;
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
