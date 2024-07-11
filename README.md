@@ -1,1 +1,1 @@
-# daily_journal
+# daily_journal_V2
