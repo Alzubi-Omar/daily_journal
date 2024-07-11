@@ -5,6 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Omar Alzubi",
@@ -17,5 +19,8 @@
     "express": "^4.19.2",
     "lodash": "^4.17.21",
     "pg": "^8.11.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
   }
 }

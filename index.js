@@ -18,7 +18,16 @@ const client = new Client({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
 });
-await client.connect();
+
+async function startServer() {
+  try {
+    await client.connect();
+    console.log("Connected to the database.");
+  } catch (err) {
+    console.error("Failed to connect to the database:", err);
+    process.exit(1); // Exit the application if the connection fails
+  }
+}
 
 //Middleware
 app.use(express.static("public"));
@@ -314,3 +323,5 @@ app.post("/read_all/:id/delete", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
 });
+
+startServer();
