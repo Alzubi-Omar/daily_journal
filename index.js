@@ -48,7 +48,7 @@ app.set("view engine", "ejs");
 const aboutContent = "Discover the Power of Gratitude: Join Our Community";
 
 // async function fetchAllPosts() {
-//   const result = await pool.query("SELECT * FROM public.posts");
+//   const result = await pool.query("SELECT * FROM posts");
 //   posts = result.rows;
 //   return posts;
 // }
@@ -56,7 +56,7 @@ const aboutContent = "Discover the Power of Gratitude: Join Our Community";
 // Fetch all posts
 async function fetchAllPosts() {
   try {
-    const result = await pool.query("SELECT * FROM public.posts");
+    const result = await pool.query("SELECT * FROM posts");
     return result.rows;
   } catch (err) {
     console.error("Error fetching posts:", err);
@@ -136,7 +136,7 @@ app.post("/new_post", async (req, res) => {
     const hash = await bcrypt.hash(password, saltRounds);
 
     const result = await pool.query(
-      "INSERT INTO public.posts(name, passkey, title, content) VALUES($1, $2, $3, $4)",
+      "INSERT INTO posts(name, passkey, title, content) VALUES($1, $2, $3, $4)",
       [postName, hash, postTitle, postContent]
     );
 
@@ -152,10 +152,9 @@ app.post("/new_post", async (req, res) => {
 app.get(`/read_all/:id`, async (req, res) => {
   try {
     const { id: postId } = req.params;
-    const result = await pool.query(
-      "SELECT * FROM public.posts WHERE id = $1",
-      [postId]
-    );
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [
+      postId,
+    ]);
     const post = result.rows[0];
 
     // Handle non-existent post
@@ -173,10 +172,9 @@ app.get(`/read_all/:id`, async (req, res) => {
 app.get("/read_all/:id/edit", async (req, res) => {
   try {
     const { id: postId } = req.params;
-    const result = await pool.query(
-      "SELECT * FROM public.posts WHERE id = $1",
-      [postId]
-    );
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [
+      postId,
+    ]);
     const post = result.rows[0];
     if (!post) {
       return res.status(404).send("Post not found");
@@ -199,10 +197,9 @@ app.post("/read_all/:id/edit", async (req, res) => {
 
   try {
     // Fetch post details from database
-    const result = await pool.query(
-      "SELECT * FROM public.posts WHERE id = $1",
-      [postId]
-    );
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [
+      postId,
+    ]);
     const post = result.rows[0];
 
     if (!post) {
@@ -266,10 +263,9 @@ app.get("/read_all/:id/delete", async (req, res) => {
   const { id: postId } = req.params;
 
   try {
-    const result = await pool.query(
-      "SELECT * FROM public.posts WHERE id = $1",
-      [postId]
-    );
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [
+      postId,
+    ]);
     const post = result.rows[0];
 
     if (!post) {
@@ -298,10 +294,9 @@ app.post("/read_all/:id/delete", async (req, res) => {
     }
 
     // Fetch post details from database
-    const result = await pool.query(
-      "SELECT * FROM public.posts WHERE id = $1",
-      [postId]
-    );
+    const result = await pool.query("SELECT * FROM posts WHERE id = $1", [
+      postId,
+    ]);
     const post = result.rows[0];
 
     // Validate postId
@@ -323,7 +318,7 @@ app.post("/read_all/:id/delete", async (req, res) => {
     const passwordMatch = await bcrypt.compare(submittedPassword, post.passkey);
 
     if (passwordMatch) {
-      await pool.query("DELETE FROM public.posts WHERE id = $1", [postId]);
+      await pool.query("DELETE FROM posts WHERE id = $1", [postId]);
       console.log("Authentication successful.");
 
       // Successful deletion
