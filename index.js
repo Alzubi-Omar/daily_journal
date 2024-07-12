@@ -30,6 +30,18 @@ async function startServer() {
   try {
     const client = await pool.connect();
     console.log("Connected to the database.");
+
+    // Create the table if it doesn't exist
+    await client.query(`
+          CREATE TABLE IF NOT EXISTS public.posts (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            passkey VARCHAR(255) NOT NULL,
+            title VARCHAR(255) NOT NULL,
+            content TEXT NOT NULL
+          );
+        `);
+    console.log("Ensured the posts table exists.");
     client.release();
   } catch (err) {
     console.error("Failed to connect to the database:", err);
