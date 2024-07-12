@@ -7,7 +7,7 @@ import _ from "lodash";
 import "dotenv/config";
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const saltRounds = 10;
 const { Pool } = pg;
 
@@ -37,6 +37,9 @@ async function startServer() {
   }
 }
 
+// Start the server
+startServer();
+
 //Middleware
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -44,22 +47,33 @@ app.set("view engine", "ejs");
 
 const aboutContent = "Discover the Power of Gratitude: Join Our Community";
 
+// async function fetchAllPosts() {
+//   const result = await pool.query("SELECT * FROM public.posts");
+//   posts = result.rows;
+//   return posts;
+// }
+
+// Fetch all posts
 async function fetchAllPosts() {
-  const result = await pool.query("SELECT * FROM public.posts");
-  posts = result.rows;
-  return posts;
+  try {
+    const result = await pool.query("SELECT * FROM public.posts");
+    return result.rows;
+  } catch (err) {
+    console.error("Error fetching posts:", err);
+    return [];
+  }
 }
 
 // array to hold posts
 let posts = [
-  {
-    // structure
-    id: "",
-    name: "",
-    password: "",
-    title: "",
-    content: "",
-  },
+  // {
+  //   // structure
+  //   id: "",
+  //   name: "",
+  //   password: "",
+  //   title: "",
+  //   content: "",
+  // },
 ];
 
 // route -> Home
@@ -336,5 +350,3 @@ app.post("/read_all/:id/delete", async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}`);
 });
-
-startServer();
