@@ -1,0 +1,197 @@
+/* Read container */
+.read-container {
+  margin: 0 auto;
+}
+
+/* Hero content */
+.hero-content {
+  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: clamp(1.5rem, 5vw, 3rem) var(--spacing-base);
+}
+
+.hero-content h1 {
+  font-size: clamp(var(--font-sm), 5vw, var(--font-lg));
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-base);
+  letter-spacing: -0.02em;
+}
+
+.hero-content p {
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  max-width: calc(var(--max-width) / 2);
+  margin: 0 auto;
+  color: var(--secondary-color);
+}
+
+/* Container */
+.blog-posts-container {
+  max-width: var(--max-width);
+  padding: 0 var(--spacing-base);
+  margin: 0 auto 20px;
+}
+
+/* Posts */
+.blog-posts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* Post card */
+.post {
+  background: var(--post-background-color);
+  border-radius: 1rem;
+  overflow: hidden;
+  position: relative;
+  animation: slideUp 0.6s ease-out forwards;
+  animation-delay: calc(attr(data-delay number) * 0.1s);
+  opacity: 0;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgb(0 0 0 / 0.15);
+}
+
+.post-content {
+  padding: clamp(1.5rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Post meta info */
+.post-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  font-size: var(--font-base);
+  color: var(--color-muted);
+}
+
+.post-meta .divider {
+  color: var(--color-divider);
+}
+
+/* Post title */
+.post-title {
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
+  margin-bottom: 1rem;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+/* Title link */
+.title-link {
+  font-weight: 600;
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+/* Hover and focus states */
+.title-link:hover,
+.title-link:focus {
+  color: var(--highlight-color);
+  text-decoration: none;
+  outline: none;
+}
+
+/* Post excerpt */
+.post-excerpt {
+  color: var(--secondary-color);
+  font-size: var(--font-base);
+  line-height: var(--line-height);
+  margin-bottom: 1.5rem;
+  flex-grow: 1;
+}
+
+/* Read more link */
+.read-more {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--spacing) / 2);
+  color: var(--read-more-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: var(--font-base);
+  transition: all 0.2s ease;
+}
+
+.read-more:hover {
+  gap: 0.75rem;
+}
+
+.read-more img {
+  transition: transform 0.2s ease;
+}
+
+.read-more:hover img {
+  transform: translateX(4px);
+}
+
+/* No posts state */
+.no-posts {
+  text-align: center;
+  padding: clamp(2rem, 5vw, 4rem);
+  background: var(--post-background-color);
+  border-radius: 1rem;
+  color: var(--color-muted);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+.no-posts img {
+  margin-bottom: 1.5rem;
+}
+
+.no-posts p:first-of-type {
+  font-size: var(--font-sm);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--primary-color);
+}
+
+.no-posts p:last-of-type {
+  font-size: var(--font-base);
+  color: var(--color-muted);
+}
+
+/* last single post */
+.blog-posts article:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: calc(50% - 1.25rem);
+  margin: 0 auto;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .blog-posts article:last-child:nth-child(odd) {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .blog-posts {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-posts article:last-child:nth-child(odd) {
+    width: 100%;
+  }
+}

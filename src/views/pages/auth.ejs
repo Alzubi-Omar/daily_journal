@@ -1,0 +1,75 @@
+<%- contentFor('body') %>
+
+<!-- Auth Container -->
+<article class="auth-container">
+  <!-- Auth Header -->
+  <header class="auth-header">
+    <h1 class="auth-title">Authentication Required</h1>
+  </header>
+
+  <!-- Auth Content -->
+  <div class="auth-content">
+    <% if (route === 'delete') { %>
+    <!-- Delete Post Form -->
+    <form class="auth-form" action="/posts/<%= postId %>/delete" method="post">
+      <% if (message) { %>
+      <div class="auth-message">
+        <h2><%= message %></h2>
+      </div>
+      <% } %>
+      <div class="form-group">
+        <input
+          type="password"
+          name="password"
+          required
+          placeholder="Enter password"
+          class="auth-input"
+        />
+      </div>
+
+      <!-- Confirm Delete Button -->
+      <div class="auth-actions">
+        <button type="submit" class="btn btn-danger">
+          <img src="/svgs/delete_post.svg" alt="Delete post icon" />
+          <span>Confirm Delete</span>
+        </button>
+      </div>
+    </form>
+    <% } else if (route === 'edit') { %>
+    <!-- Edit Post Form -->
+    <form class="auth-form" action="/posts/<%= postId %>/edit" method="post">
+      <% if (message) { %>
+      <div class="auth-message">
+        <h2><%= message %></h2>
+      </div>
+      <% } %>
+
+      <!-- Continue to Edit Button -->
+      <div class="form-group">
+        <input
+          type="password"
+          name="password"
+          required
+          autofocus
+          placeholder="Enter password"
+          class="auth-input"
+        />
+      </div>
+      <div class="auth-actions">
+        <button type="submit" class="btn btn-primary">
+          <img src="/svgs/edit_post.svg" alt="Edit post icon" />
+          <span>Continue to Edit</span>
+        </button>
+      </div>
+    </form>
+    <% } %>
+  </div>
+
+  <!-- Auth Footer -->
+  <footer class="auth-footer">
+    <a href="/blogs" class="btn btn-secondary">
+      <img src="/svgs/read_all.svg" alt="Back to posts icon" />
+      <span>Back to Posts</span>
+    </a>
+  </footer>
+</article>

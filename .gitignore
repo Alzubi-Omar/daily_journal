@@ -1,0 +1,39 @@
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+
+# Log files
+*.log
+logs/
+
+# Node.js logs
+npm-debug.log*
+
+# IDE directories
+.vscode/
+.idea/
+
+# macOS system files
+.DS_Store
+
+# Build directories
+dist/
+build/
+out/
+
+# Coverage directory
+coverage/
+
+# Windows files
+Thumbs.db
+*.cab
+*.msi
+
+# Ignore test coverage folder
+coverage/
+
+# Ignore environment variable files
+.env
+.env.test

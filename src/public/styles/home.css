@@ -1,0 +1,131 @@
+/* Home container */
+.home-container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 3vw, 2rem);
+  text-align: center;
+}
+
+/* Hero title */
+.hero-title {
+  font-size: clamp(var(--font-sm), 5vw, var(--font-lg));
+  margin-bottom: 2.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.hero-title .accent {
+  color: var(--accent-color);
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 1.2rem;
+  color: var(--secondary-color);
+  max-width: 600px;
+  margin: 2.5rem auto 0;
+  font-weight: 400;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+/* Image wrapper */
+.hero-image-wrapper {
+  max-width: 600px;
+  margin: 20px auto;
+  position: relative;
+  animation: scaleIn 1s ease-out;
+}
+
+/* Image styling */
+.hero-image {
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease;
+}
+
+.hero-image:hover {
+  transform: translateY(-5px);
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing);
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.primary-button,
+.secondary-button {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: var(--font-base);
+  font-weight: 600;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin: 5px;
+}
+
+.primary-button {
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+  border: none;
+}
+
+.primary-button:hover {
+  background-color: var(--button-hover-background);
+  color: var(--button-text-color);
+  text-decoration: none;
+}
+
+.secondary-button {
+  background-color: var(--secondary-button-background);
+  color: var(--secondary-button-text-color);
+  border: 2px solid var(--secondary-button-border);
+}
+
+.secondary-button:hover {
+  background-color: var(--secondary-button-hover-background);
+  color: var(--button-text-color);
+  text-decoration: none;
+}
+
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

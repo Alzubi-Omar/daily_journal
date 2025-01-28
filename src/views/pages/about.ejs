@@ -1,0 +1,46 @@
+<%- contentFor('body') %>
+
+<!-- About Container -->
+<div class="about-container">
+  <!-- Hero Content -->
+  <section class="hero-content">
+    <h1 class="section-title"><%= aboutTitle %></h1>
+    <div class="hero-image-wrapper">
+      <img
+        class="hero-image"
+        src="/imgs/about_page.png"
+        alt="Peaceful sunset at beach"
+        width="1200"
+        height="600"
+        loading="lazy"
+      />
+    </div>
+    <p class="hero-about-content"><%= aboutContent %></p>
+  </section>
+
+  <!-- Mission Section -->
+  <section class="mission-section">
+    <h2 class="section-title"><%= aboutSectionTitle %></h2>
+    <p class="mission-content"><%= aboutMissionContent %></p>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact-section">
+    <div class="contact-card">
+      <header class="contact-header">
+        <h2 class="contact-title"><%= aboutContactTitle %></h2>
+        <div class="logo-wrapper">
+          <img src="/imgs/Logo.png" alt="Daily Journal Logo" loading="lazy" />
+        </div>
+      </header>
+
+      <a href="mailto:contact.alzubi@gmail.com" class="contact-button">
+        Get in touch
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12" />
+          <polyline points="12 5 19 12 12 19" />
+        </svg>
+      </a>
+    </div>
+  </section>
+</div>

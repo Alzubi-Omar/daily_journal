@@ -1,0 +1,38 @@
+<%- contentFor('body') %>
+
+<!-- Home Container -->
+<div class="home-container">
+  <div class="hero-content">
+    <!-- Hero Title -->
+    <h1 class="hero-title">
+      <%= startingTitle || 'Welcome to Daily Journal' %>
+      <span class="accent">:)</span>
+    </h1>
+
+    <!-- Hero Image -->
+    <div class="hero-image-wrapper">
+      <img
+        src="/imgs/home.png"
+        alt="A cup of coffee with a coaster next to a journal book"
+        class="hero-image"
+        loading="lazy"
+      />
+    </div>
+
+    <!-- Hero Description -->
+    <div class="hero-description">
+      <h2 class="subtitle">
+        <%= startingContentHome || 'A journal shared with everyone.' %>
+      </h2>
+
+      <!-- Write/Read Content -->
+      <% if (writeReadContentHome) { %>
+      <h2 class="subtitle"><%= writeReadContentHome %></h2>
+      <% } %>
+      <div class="cta-buttons">
+        <a href="/new" class="primary-button">Start Writing</a>
+        <a href="/blogs" class="secondary-button">Read Stories</a>
+      </div>
+    </div>
+  </div>
+</div>

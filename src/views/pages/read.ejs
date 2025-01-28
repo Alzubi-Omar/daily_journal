@@ -1,0 +1,59 @@
+<%- contentFor('body') %>
+
+<!-- Read Container -->
+<div class="read-container">
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <h1>Latest Stories</h1>
+    <p>Discover our collection of thoughtful articles</p>
+  </div>
+
+  <!-- Posts Container -->
+  <div class="blog-posts-container">
+    <% if (posts && posts.length > 0) { %>
+    <section class="blog-posts">
+      <% posts.forEach((post, index) => { %>
+      <article class="post" data-delay="<%= index %>">
+        <!-- Post Content Structure -->
+        <div class="post-content">
+          <div class="post-meta">
+            <span class="author">By <%= post.name %></span>
+            <span class="divider" aria-hidden="true">•</span>
+            <span class="read-time"><%= post.readTime %> min read</span>
+          </div>
+
+          <h2 class="post-title">
+            <a
+              href="/posts/<%= post.id %>"
+              class="title-link"
+              aria-label="Read more about <%= post.title %>"
+            >
+              <%= post.title %>
+            </a>
+          </h2>
+
+          <p class="post-excerpt"><%= post.content.substring(0, 150) %>...</p>
+
+          <!-- Read More Link -->
+          <div class="post-footer">
+            <a href="/posts/<%= post.id %>" class="read-more">
+              Read More
+              <img
+                src="/svgs/read_more.svg"
+                alt="Arrow pointing right, continue reading"
+              />
+            </a>
+          </div>
+        </div>
+      </article>
+      <% }) %>
+    </section>
+    <% } else { %>
+    <div class="no-posts">
+      <img src="/svgs/no_post.svg" alt="Icon indicating no posts available" />
+      <p>No posts available at the moment.</p>
+      <p>Check back soon for new content!</p>
+    </div>
+    <% } %>
+  </div>
+</div>

@@ -1,0 +1,53 @@
+<%- contentFor('body') %>
+
+<!-- Edit Container -->
+<article class="edit-container">
+  <!-- Edit Header -->
+  <header class="edit-header">
+    <h1>Edit Post</h1>
+  </header>
+
+  <!-- Edit Post Form -->
+  <form action="/posts/<%= post.id %>/update/" method="POST" class="edit-form">
+    <!-- Title Input Field -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        id="title"
+        name="NewPostTitle"
+        value="<%= post.title %>"
+        required
+        class="form-input"
+      />
+    </div>
+
+    <!-- Content Textarea -->
+    <div class="form-group">
+      <label for="content">Content</label>
+      <textarea
+        id="content"
+        name="NewPostContent"
+        required
+        class="form-textarea"
+      >
+    <%= post.content %></textarea
+      >
+    </div>
+
+    <!-- Form Footer with Action Buttons -->
+    <footer class="edit-footer">
+      <!-- Save Changes Button -->
+      <button type="submit" class="btn-save">
+        <img src="/svgs/save_post.svg" alt="Save post" />
+        <span>Save Changes</span>
+      </button>
+
+      <!-- Cancel Button -->
+      <a href="/posts/<%= post.id %>" class="btn-cancel">
+        <img src="/svgs/cancel_edit.svg" alt="Cancel" />
+        <span>Cancel</span>
+      </a>
+    </footer>
+  </form>
+</article>

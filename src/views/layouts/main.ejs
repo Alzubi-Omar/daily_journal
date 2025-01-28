@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Dynamic meta description and title -->
+    <meta
+      name="description"
+      content="<%= typeof meta !== 'undefined' ? meta.description : 'Welcome to Daily Journal, a place to share your thoughts and experiences.' %>"
+    />
+    <title>
+      <%= typeof meta !== 'undefined' ? meta.title : 'Daily Journal' %>
+    </title>
+
+    <!-- Preload critical resources for better performance -->
+    <link rel="preload" href="/styles/styles.css" as="style" />
+    <link rel="preload" href="/js/main.js" as="script" />
+
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="/styles/styles.css" />
+
+    <!-- Page Custom CSS -->
+    <% if (Array.isArray(locals.styles) && locals.styles.length > 0) { %> <%
+    styles.forEach(function(style) { %>
+    <link rel="stylesheet" href="/styles/<%= style %>.css" />
+    <% }); %> <% } %>
+
+    <!-- Google Fonts with preconnect FOR faster loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Page specific head content -->
+    <%- locals.head || '' %>
+  </head>
+  <body>
+    <div class="page-wrapper">
+      <!-- Header partial -->
+      <%- include('../partials/header') %>
+
+      <!-- Flash messages -->
+      <% if (messages.success && messages.success.length > 0) { %>
+      <div id="flash-message" class="flash-message success">
+        <p><%= messages.success %></p>
+      </div>
+      <% } %>
+
+      <!-- Main Content -->
+      <main><%- body %></main>
+
+      <!-- Footer Part -->
+      <%- include('../partials/footer') %>
+
+      <!-- Base Scripts -->
+      <script src="/js/main.js" defer></script>
+
+      <!-- Page Specific Scripts -->
+      <% if (Array.isArray(locals.scripts) && locals.scripts.length > 0) { %> <%
+      scripts.forEach(function(script) { %>
+      <script src="/js/<%= script %>.js" defer></script>
+      <% }); %> <% } %>
+    </div>
+  </body>
+</html>

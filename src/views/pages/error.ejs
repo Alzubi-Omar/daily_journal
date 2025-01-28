@@ -1,0 +1,17 @@
+<%- contentFor('body') %>
+
+<!-- Error Container -->
+<div class="error-container">
+  <!-- Error heading -->
+  <h1>Oops! Something went wrong</h1>
+  <p><%= error %></p>
+  <!-- Error Details (Conditional) -->
+  <% if (typeof details !== 'undefined' && details) { %>
+  <!-- Error details -->
+  <div class="error-details">
+    <p><strong>Details:</strong> <%= details %></p>
+  </div>
+  <% } %>
+  <!-- Return Home Link -->
+  <a href="/" class="button" aria-label="Return to the homepage">Return Home</a>
+</div>

@@ -1,0 +1,55 @@
+<%- contentFor('body') %>
+
+<!-- Compose Container -->
+<div class="compose-container">
+  <!-- Compose Title -->
+  <h1 class="compose-title">Share Your Story</h1>
+
+  <form class="compose-form" action="/posts/new" method="POST">
+    <!-- Name Input -->
+    <div class="form-group">
+      <label for="Name">Name</label>
+      <input type="text" id="Name" name="postName" required title="Author" />
+    </div>
+
+    <!-- Password Input -->
+    <div class="form-group">
+      <label for="Password">Password</label>
+      <input
+        type="password"
+        name="password"
+        required
+        minlength="6"
+        title="Password must be at least 6 characters long."
+        aria-label="Password"
+      />
+    </div>
+
+    <!-- Title Input -->
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        id="title"
+        name="postTitle"
+        required
+        title="Title of post"
+      />
+    </div>
+
+    <!-- Content Input -->
+    <div class="form-group">
+      <label for="postContent">Content</label>
+      <textarea
+        name="postContent"
+        id="postContent"
+        rows="10"
+        required
+        title="Write your content here. Press Enter to start a new paragraph."
+      ></textarea>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="submit-btn">Publish</button>
+  </form>
+</div>
