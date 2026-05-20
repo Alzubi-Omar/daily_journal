@@ -65,3 +65,10 @@ npm start
 ```
 
 3. The application will now be running at http://localhost:3000.
+
+### Security Notes
+
+Two known vulnerabilities exist in `tar` and `@mapbox/node-pre-gyp` —
+both are transitive dependencies of `bcrypt`'s native build toolchain
+and are only invoked during `npm install`. They are not reachable at
+runtime and do not affect application security.
