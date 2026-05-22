@@ -10,11 +10,6 @@ import { configureViewEngine } from "./src/config/viewEngine.js";
 import { sessionMiddleware } from "./src/config/session.js";
 import logger from "./src/utils/logger.js";
 import initializeDatabase, { pool } from "./src/config/db.js";
-import {
-  doubleCsrfProtection,
-  csrfTokenMiddleware,
-} from "./src/middleware/csrf.js";
-import { globalLimiter } from "./src/middleware/rateLimiter.js";
 import blogRoutes from "./src/routes/blogRoutes.js";
 import aboutRoutes from "./src/routes/aboutRoutes.js";
 import homeRoutes from "./src/routes/homeRoutes.js";
@@ -44,6 +39,7 @@ if (
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// View engine and static assets
 configureViewEngine(app);
 
 /* -- Security -- */
@@ -62,14 +58,9 @@ app.use(
   }),
 );
 
-/* -- Rate Limiting, Session and Flash -- */
-app.use(globalLimiter);
+/* -- Session and flash -- */
 app.use(sessionMiddleware);
 app.use(flash());
-
-/* -- CSRF Protection -- */
-app.use(doubleCsrfProtection);
-app.use(csrfTokenMiddleware);
 
 /* -- Routes -- */
 app.use("/", homeRoutes);
