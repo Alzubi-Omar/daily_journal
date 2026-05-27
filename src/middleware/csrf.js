@@ -1,23 +1,32 @@
 import { doubleCsrf } from "csrf-csrf";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 /**
  * CSRF protection middleware using the Double Submit Cookie pattern.
  *
  * How it works:
- * - A CSRF token is generated and stored in a signed cookie
- * - Every state-changing POST must include a matching token in the request body
- * - Requests with missing or mismatched tokens are rejected with 403
+ * - A CSRF token is generated and stored in a secure cookie
+ * - The client must send the same token in each state-changing request (POST/PUT/DELETE)
+ * - Requests with missing or invalid tokens are rejected with 403
  *
- * The token is exposed via res.locals so every EJS view can access
- * it as `csrfToken` without any extra controller code.
+ * This prevents cross-site request forgery attacks by ensuring that
+ * malicious websites cannot perform actions on behalf of a logged-in user.
+ *
+ * Cookie behavior:
+ * - Uses "__Host-" prefix in production for stronger browser-level security rules
+ * - Falls back to a simple cookie name in development (HTTP compatibility)
+ *
+ * The token is exposed via res.locals so EJS templates can access it as `csrfToken`
+ * without needing extra controller logic.
  */
 const { generateToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => process.env.SESSION_SECRET,
-  cookieName: "x-csrf-token",
+  cookieName: isProduction ? "__Host-psifi.x-csrf-token" : "x-csrf-token",
   cookieOptions: {
-    httpOnly: true,
+    secure: isProduction,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    httpOnly: true,
   },
   size: 64,
   ignoredMethods: ["GET", "HEAD", "OPTIONS"],
@@ -32,4 +41,4 @@ export function csrfTokenMiddleware(req, res, next) {
   next();
 }
 
-export { doubleCsrfProtection };
+export { generateToken, doubleCsrfProtection };

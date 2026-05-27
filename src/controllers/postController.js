@@ -102,7 +102,7 @@ export async function createPost(req, res) {
     // Insert the new post into the database
     await pool.query(
       "INSERT INTO posts(name, passkey, title, content) VALUES($1, $2, $3, $4)",
-      [sanitizedName, hash, sanitizedTitle, formattedContent]
+      [sanitizedName, hash, sanitizedTitle, formattedContent],
     );
 
     logger.info("New post created successfully:", {
@@ -120,7 +120,7 @@ export async function createPost(req, res) {
       res,
       500,
       "Failed to add new post. Please try again later.",
-      error
+      error,
     );
   }
 }
@@ -160,7 +160,7 @@ export async function readPostById(req, res) {
       res,
       500,
       "An error occurred while retrieving the post. Please try again later.",
-      error
+      error,
     );
   }
 }
@@ -200,7 +200,7 @@ export async function editPostPage(req, res) {
       res,
       500,
       "An error occurred while retrieving the post. Please try again later.",
-      error
+      error,
     );
   }
 }
@@ -229,7 +229,7 @@ export async function authenticatePostEdit(req, res) {
       post.passkey,
       postId,
       res,
-      "edit"
+      "edit",
     );
     if (isValid !== true) return;
 
@@ -252,7 +252,7 @@ export async function authenticatePostEdit(req, res) {
       res,
       500,
       "An unexpected error occurred. Please try again later.",
-      error
+      error,
     );
   }
 }
@@ -279,7 +279,7 @@ export async function updatePostById(req, res) {
     // Validate title and content
     const validation = validators.validatePostFields(
       sanitizedTitle,
-      sanitizedContent
+      sanitizedContent,
     );
 
     if (!validation.isValid) {
@@ -289,7 +289,7 @@ export async function updatePostById(req, res) {
     // Update the post in the database
     const result = await pool.query(
       "UPDATE posts SET title = $1, content = $2 WHERE id = $3",
-      [sanitizedTitle, sanitizedContent, postId]
+      [sanitizedTitle, sanitizedContent, postId],
     );
 
     // if the post updated successfully
@@ -305,7 +305,7 @@ export async function updatePostById(req, res) {
     errorHandler.renderError(
       res,
       500,
-      "An unexpected error occurred. Please try again later."
+      "An unexpected error occurred. Please try again later.",
     );
   } catch (error) {
     logger.error(`Error updating post: ${error.message}`, { error });
@@ -313,7 +313,7 @@ export async function updatePostById(req, res) {
       res,
       500,
       "An unexpected error occurred. Please try again later.",
-      error
+      error,
     );
   }
 }
@@ -352,7 +352,7 @@ export async function confirmDeletePost(req, res) {
       res,
       500,
       "An unexpected error occurred. Please try again later.",
-      error
+      error,
     );
   }
 }
@@ -381,7 +381,7 @@ export async function deletePost(req, res) {
       post.passkey,
       postId,
       res,
-      "delete"
+      "delete",
     );
     if (isValid !== true) return;
 
@@ -394,12 +394,12 @@ export async function deletePost(req, res) {
       res.redirect("/blogs");
     } else {
       logger.error(
-        `Error deleting post: Unexpected rowCount for post: ${postId}`
+        `Error deleting post: Unexpected rowCount for post: ${postId}`,
       );
       errorHandler.renderError(
         res,
         500,
-        "An unexpected error occurred. Please try again later."
+        "An unexpected error occurred. Please try again later.",
       );
     }
   } catch (error) {
@@ -409,7 +409,39 @@ export async function deletePost(req, res) {
       res,
       500,
       "An unexpected error occurred. Please try again later.",
-      error
+      error,
+    );
+  }
+}
+
+//
+
+/**
+ * Renders the Compose page for creating new posts.
+ * Handles errors by rendering an error page.
+ *
+ * @async
+ * @function renderComposePage
+ */
+export async function renderComposePage(req, res) {
+  try {
+    res.render("pages/compose", {
+      meta: {
+        title: "Compose - Daily Journal",
+        description:
+          "Create a new post and share your thoughts with the world.",
+      },
+      styles: ["compose"],
+      messages: req.flash(),
+    });
+    logger.info("Successfully rendered the compose page");
+  } catch (error) {
+    logger.error("Error rendering compose page:", error);
+    errorHandler.renderError(
+      res,
+      500,
+      "An error occurred. Please try again later.",
+      error,
     );
   }
 }

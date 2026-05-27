@@ -6,6 +6,7 @@ import express from "express";
 import "dotenv/config";
 import helmet from "helmet";
 import flash from "express-flash";
+import cookieParser from "cookie-parser";
 import { configureViewEngine } from "./src/config/viewEngine.js";
 import { sessionMiddleware } from "./src/config/session.js";
 import logger from "./src/utils/logger.js";
@@ -18,7 +19,6 @@ import { globalLimiter } from "./src/middleware/rateLimiter.js";
 import blogRoutes from "./src/routes/blogRoutes.js";
 import aboutRoutes from "./src/routes/aboutRoutes.js";
 import homeRoutes from "./src/routes/homeRoutes.js";
-import composeRoutes from "./src/routes/composeRoutes.js";
 import postRoutes from "./src/routes/postRoutes.js";
 
 /* -- Startup validation -- */
@@ -42,6 +42,7 @@ if (
 }
 
 const app = express();
+app.use(cookieParser());
 const PORT = process.env.PORT || 3000;
 
 configureViewEngine(app);
@@ -75,7 +76,6 @@ app.use(csrfTokenMiddleware);
 app.use("/", homeRoutes);
 app.use("/blogs", blogRoutes);
 app.use("/about", aboutRoutes);
-app.use("/new", composeRoutes);
 app.use("/posts", postRoutes);
 
 /* -- 404 handler -- */

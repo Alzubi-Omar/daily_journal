@@ -11,9 +11,12 @@ export const globalLimiter = rateLimit({
   max: 200,
   standardHeaders: true,
   legacyHeaders: false,
-  message: {
-    error: "Too many requests. Please try again later.",
-  },
+  message: { error: "Too many requests. Please try again later." },
+  skip: (req) =>
+    req.path.startsWith("/styles") ||
+    req.path.startsWith("/js") ||
+    req.path.startsWith("/svgs") ||
+    req.path.startsWith("/imgs"),
 });
 
 /**
