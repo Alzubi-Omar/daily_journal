@@ -3,38 +3,46 @@ import { doubleCsrf } from "csrf-csrf";
 const isProduction = process.env.NODE_ENV === "production";
 
 /**
- * CSRF protection middleware using the Double Submit Cookie pattern.
+ * CSRF Protection
  *
- * How it works:
- * - A CSRF token is generated and stored in a secure cookie
- * - The client must send the same token in each state-changing request (POST/PUT/DELETE)
- * - Requests with missing or invalid tokens are rejected with 403
- *
- * This prevents cross-site request forgery attacks by ensuring that
- * malicious websites cannot perform actions on behalf of a logged-in user.
- *
- * Cookie behavior:
- * - Uses "__Host-" prefix in production for stronger browser-level security rules
- * - Falls back to a simple cookie name in development (HTTP compatibility)
- *
- * The token is exposed via res.locals so EJS templates can access it as `csrfToken`
- * without needing extra controller logic.
+ * Using Double Submit Cookie Pattern:
+ * - Token is stored in a cookie
+ * - Token must be sent back in every POST/PUT/DELETE request
+ * - Protects against Cross-Site Request Forgery attacks
  */
+
+export const CSRF_COOKIE_NAME = isProduction
+  ? "__Host-psifi.x-csrf-token"
+  : "x-csrf-token";
+
 const { generateToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => process.env.SESSION_SECRET,
-  cookieName: isProduction ? "__Host-psifi.x-csrf-token" : "x-csrf-token",
+
+  // Cookie Configuration
+  cookieName: CSRF_COOKIE_NAME,
   cookieOptions: {
-    secure: isProduction,
+    secure: isProduction, // HTTPS only in production
     sameSite: "lax",
-    httpOnly: true,
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60, // 1 hour expiry
   },
+
+  // Token settings
   size: 64,
+
+  // Methods that don't need CSRF protection
   ignoredMethods: ["GET", "HEAD", "OPTIONS"],
+
+  // Where to look for the token
+  getTokenFromRequest: (req) => {
+    return req.body[CSRF_COOKIE_NAME] || req.headers["x-csrf-token"];
+  },
 });
 
 /**
- * Middleware that injects csrfToken into res.locals.
- * Makes the token available in all EJS views automatically.
+ * CSRF Token Middleware
+ *
+ * Always generates the token and makes it available in res.locals.csrfToken
  */
 export function csrfTokenMiddleware(req, res, next) {
   res.locals.csrfToken = generateToken(req, res);
