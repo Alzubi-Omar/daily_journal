@@ -42,7 +42,6 @@ if (
 }
 
 const app = express();
-app.use(cookieParser());
 const PORT = process.env.PORT || 3000;
 
 configureViewEngine(app);
@@ -66,11 +65,12 @@ app.use(
 /* -- Rate Limiting, Session and Flash -- */
 app.use(globalLimiter);
 app.use(sessionMiddleware);
+app.use(cookieParser());
 app.use(flash());
 
 /* -- CSRF Protection -- */
-app.use(doubleCsrfProtection);
-app.use(csrfTokenMiddleware);
+app.use(doubleCsrfProtection); // 🔐 validate token
+app.use(csrfTokenMiddleware); // 🎟️ generate token
 
 /* -- Routes -- */
 app.use("/", homeRoutes);
