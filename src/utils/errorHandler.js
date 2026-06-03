@@ -1,27 +1,25 @@
 import logger from "./logger.js";
 
 /**
- * @module errorHandler
- * @description Handles errors by logging them and rendering an error page for *              the user.
+ * @fileoverview Centralized error handling utility.
  *
- * Log the error details for debugging.
- * Default error message if none provided
- * Render the error page
+ * Logs the error and renders the error page with an appropriate message.
+ * Error details are only exposed in development mode.
+ *
+ * @module utils/errorHandler
  */
-
 export const errorHandler = {
   renderError(res, status, message, error) {
-    logger.error(`Error occurred: ${message}`, {
-      status,
-      error: process.env.NODE_ENV === "development" ? error : undefined,
-    });
+    const detail =
+      process.env.NODE_ENV === "development" && error
+        ? ` — ${error.message}`
+        : "";
 
-    const userMessage =
-      message || "An unexpected error occurred. Please try again later.";
+    logger.error(`Error [${status}]: ${message}${detail}`);
 
     res.status(status).render("pages/error", {
       meta: { title: "Error - Daily Journal" },
-      error: userMessage,
+      error: message || "An unexpected error occurred. Please try again later.",
       details:
         process.env.NODE_ENV === "development" ? error?.message : undefined,
     });

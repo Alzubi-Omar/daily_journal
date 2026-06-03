@@ -1,5 +1,6 @@
 /**
  * @fileoverview Custom logging utility with timestamp and environment-aware logging
+ *
  * @module logger
  * @description Provides structured logging with:
  */
