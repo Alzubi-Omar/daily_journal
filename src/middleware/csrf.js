@@ -24,6 +24,7 @@ const { generateToken, doubleCsrfProtection } = doubleCsrf({
     secure: isProduction, // HTTPS only in production
     sameSite: "lax",
     httpOnly: false,
+    path: "/",
     maxAge: 1000 * 60 * 60, // 1 hour expiry
   },
 
