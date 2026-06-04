@@ -2,7 +2,7 @@
 
 A full-stack blog application where users can write, edit, and delete password-protected posts. Built with Node.js, Express, PostgreSQL, and EJS.
 
-**Live demo:** [live-soon]
+**Live demo:** [daily-journal-3avl.onrender.com](https://daily-journal-3avl.onrender.com) &nbsp;·&nbsp;
 **Portfolio:** [omar-alzubi-portfolio.netlify.app](https://omar-alzubi-portfolio.netlify.app) &nbsp;·&nbsp;
 **Author:** [Omar Alzubi](https://linkedin.com/in/omaralzubi-007oa)
 
