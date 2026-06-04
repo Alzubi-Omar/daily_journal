@@ -1,177 +1,183 @@
-/* Read container */
+/* -- BLOG LISTING PAGE --*/
 .read-container {
+  max-width: var(--max-width);
   margin: 0 auto;
 }
 
-/* Hero content */
+/* -- Hero banner -- */
 .hero-content {
-  background: linear-gradient(to right, #f8f9fa, #e9ecef);
+  background: var(--brand-yellow-light);
+  border-bottom: 1px solid var(--brand-yellow-dark);
   text-align: center;
-  margin-bottom: 3rem;
-  padding: clamp(1.5rem, 5vw, 3rem) var(--spacing-base);
+  padding: clamp(var(--space-8), 6vw, var(--space-16)) var(--space-4);
+  margin-bottom: var(--space-10);
 }
 
 .hero-content h1 {
-  font-size: clamp(var(--font-sm), 5vw, var(--font-lg));
-  color: var(--primary-color);
-  margin-bottom: var(--spacing-base);
+  font-size: clamp(var(--font-lg), 5vw, var(--font-xl));
   letter-spacing: -0.02em;
+  margin-bottom: var(--space-3);
 }
 
 .hero-content p {
-  font-size: clamp(1rem, 2vw, 1.1rem);
-  max-width: calc(var(--max-width) / 2);
+  font-size: clamp(var(--font-base), 2vw, var(--font-md));
+  color: var(--color-text-secondary);
+  max-width: 36rem;
   margin: 0 auto;
-  color: var(--secondary-color);
 }
 
-/* Container */
+/* Posts grid */
 .blog-posts-container {
-  max-width: var(--max-width);
-  padding: 0 var(--spacing-base);
-  margin: 0 auto 20px;
+  padding: 0 var(--space-4) var(--space-12);
 }
 
-/* Posts */
 .blog-posts {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: clamp(1.5rem, 3vw, 2.5rem);
+  gap: clamp(var(--space-4), 3vw, var(--space-8));
 }
 
 /* Post card */
 .post {
-  background: var(--post-background-color);
-  border-radius: 1rem;
+  background: var(--color-card);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  position: relative;
-  animation: slideUp 0.6s ease-out forwards;
-  animation-delay: calc(attr(data-delay number) * 0.1s);
-  opacity: 0;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--color-card-shadow);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
+  animation: slideUp 0.5s ease-out both;
 }
 
 .post:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px -8px rgb(0 0 0 / 0.15);
+  box-shadow: var(--color-card-shadow-hover);
 }
 
 .post-content {
-  padding: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(var(--space-5), 3vw, var(--space-8));
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* Post meta info */
+/* Post meta */
 .post-meta {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 1.25rem;
-  font-size: var(--font-base);
-  color: var(--color-muted);
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  font-size: var(--font-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.post-meta .divider {
-  color: var(--color-divider);
+.divider {
+  color: var(--color-border);
 }
 
 /* Post title */
 .post-title {
-  font-size: clamp(1.2rem, 2vw, 1.5rem);
-  margin-bottom: 1rem;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
+  font-size: clamp(var(--font-base), 2vw, var(--font-md));
+  margin-bottom: var(--space-3);
+  line-height: var(--leading-tight);
 }
 
-/* Title link */
 .title-link {
-  font-weight: 600;
-  color: var(--primary-color);
+  color: var(--color-text-primary);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-base);
 }
 
-/* Hover and focus states */
-.title-link:hover,
-.title-link:focus {
-  color: var(--highlight-color);
-  text-decoration: none;
-  outline: none;
+.title-link:hover {
+  color: var(--color-accent);
 }
 
-/* Post excerpt */
+/* Excerpt */
 .post-excerpt {
-  color: var(--secondary-color);
-  font-size: var(--font-base);
-  line-height: var(--line-height);
-  margin-bottom: 1.5rem;
+  color: var(--color-text-secondary);
+  font-size: var(--font-sm);
+  line-height: var(--leading-relaxed);
+  margin-bottom: var(--space-6);
   flex-grow: 1;
 }
 
-/* Read more link */
+/* Post footer */
+.post-footer {
+  margin-top: auto;
+}
+
+/* Read more */
 .read-more {
   display: inline-flex;
   align-items: center;
-  gap: calc(var(--spacing) / 2);
-  color: var(--read-more-color);
+  gap: var(--space-2);
+  color: var(--color-accent);
   text-decoration: none;
-  font-weight: 500;
-  font-size: var(--font-base);
-  transition: all 0.2s ease;
+  font-weight: 600;
+  font-size: var(--font-sm);
+  transition:
+    gap var(--transition-base),
+    color var(--transition-base);
 }
 
 .read-more:hover {
-  gap: 0.75rem;
+  gap: var(--space-3);
+  color: var(--color-accent-hover);
 }
 
 .read-more img {
-  transition: transform 0.2s ease;
+  width: 14px;
+  height: 14px;
+  transition: transform var(--transition-base);
 }
 
 .read-more:hover img {
-  transform: translateX(4px);
+  transform: translateX(3px);
 }
 
-/* No posts state */
+/* Odd last card — full width centered */
+.blog-posts article:last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+  max-width: calc(50% - var(--space-4));
+  margin: 0 auto;
+}
+
+/* No posts */
 .no-posts {
   text-align: center;
-  padding: clamp(2rem, 5vw, 4rem);
-  background: var(--post-background-color);
-  border-radius: 1rem;
-  color: var(--color-muted);
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  padding: clamp(var(--space-8), 6vw, var(--space-16));
+  background: var(--color-card);
+  border: 1px solid var(--color-card-border);
+  border-radius: var(--radius-xl);
+  color: var(--color-text-muted);
+  box-shadow: var(--color-card-shadow);
+  grid-column: 1 / -1;
 }
 
 .no-posts img {
-  margin-bottom: 1.5rem;
+  margin: 0 auto var(--space-6);
+  opacity: 0.5;
 }
 
 .no-posts p:first-of-type {
-  font-size: var(--font-sm);
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: var(--primary-color);
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
 }
 
 .no-posts p:last-of-type {
-  font-size: var(--font-base);
-  color: var(--color-muted);
-}
-
-/* last single post */
-.blog-posts article:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-  max-width: calc(50% - 1.25rem);
-  margin: 0 auto;
+  font-size: var(--font-sm);
 }
 
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -179,19 +185,15 @@
   }
 }
 
-/* Responsive design */
 @media (max-width: 1024px) {
   .blog-posts article:last-child:nth-child(odd) {
     max-width: 100%;
+    grid-column: auto;
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
   .blog-posts {
     grid-template-columns: 1fr;
-  }
-
-  .blog-posts article:last-child:nth-child(odd) {
-    width: 100%;
   }
 }
