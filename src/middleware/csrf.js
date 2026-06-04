@@ -11,9 +11,7 @@ const isProduction = process.env.NODE_ENV === "production";
  * - Protects against Cross-Site Request Forgery attacks
  */
 
-export const CSRF_COOKIE_NAME = isProduction
-  ? "__Host-psifi.x-csrf-token"
-  : "x-csrf-token";
+export const CSRF_COOKIE_NAME = "x-csrf-token";
 
 const { generateToken, doubleCsrfProtection } = doubleCsrf({
   getSecret: () => process.env.SESSION_SECRET,

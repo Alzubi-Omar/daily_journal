@@ -70,8 +70,8 @@ app.use(cookieParser());
 app.use(flash());
 
 /* -- CSRF Protection -- */
-app.use(csrfTokenMiddleware); // 🎟️ generate token
 app.use(doubleCsrfProtection); // 🔐 validate token
+app.use(csrfTokenMiddleware); // 🎟️ generate token
 
 /* -- Routes -- */
 app.use("/", homeRoutes);
