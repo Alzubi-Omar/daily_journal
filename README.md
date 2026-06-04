@@ -1,74 +1,146 @@
-# Daily Journal Web Application
+# Daily Journal
 
-## Overview
+A full-stack blog application where users can write, edit, and delete password-protected posts. Built with Node.js, Express, PostgreSQL, and EJS.
 
-This is a full-stack web application for managing posts, built using **Express.js**, **PostgreSQL**, and **bcrypt** for secure password management. Users can create, edit, view, and delete posts after providing a password. This application is designed for managing personal journal entries in a secure and organized manner.
+**Live demo:** [live-soon]
+**Portfolio:** [omar-alzubi-portfolio.netlify.app](https://omar-alzubi-portfolio.netlify.app) &nbsp;·&nbsp;
+**Author:** [Omar Alzubi](https://linkedin.com/in/omaralzubi-007oa)
+
+---
 
 ## Features
 
-- **Create posts**: Users can write journal entries with titles and content.
-- **View all posts**: Displays a list of all journal entries stored in the database.
-- **Edit posts**: Post content can be updated with correct password authentication.
-- **Delete posts**: Posts can be deleted after authenticating with the correct password.
-- **Password protection**: Editing and deleting posts requires users to enter the correct password for each post.
+- Create posts with a title, author name, and bcrypt-hashed password
+- Browse all posts with calculated read time
+- Edit or delete posts after password authentication
+- Flash messages confirm every action
+- Fully responsive — mobile to desktop
 
-## Technologies
+---
 
-- **Express.js**: Framework for routing and server-side logic.
-- **PostgreSQL**: Database management system for storing and retrieving posts.
-- **bcrypt**: Password hashing library for securely storing and comparing passwords.
-- **EJS**: Templating engine for rendering dynamic HTML pages.
+## Tech Stack
 
-## Setup Instructions
+| Layer      | Technology                                  |
+| ---------- | ------------------------------------------- |
+| Runtime    | Node.js 20+                                 |
+| Framework  | Express.js                                  |
+| Database   | PostgreSQL via `pg` connection pool         |
+| Templating | EJS with `express-ejs-layouts`              |
+| Auth       | Per-post bcrypt password hashing            |
+| Security   | `helmet`, `csrf-csrf`, `express-rate-limit` |
+| Session    | `express-session` with MemoryStore          |
+
+---
+
+## Architecture
+
+```
+src/
+├── config/          # DB connection, session, view engine, paths
+├── controllers/     # Route handlers — one file per resource
+├── middleware/       # CSRF protection, rate limiting
+├── routes/          # Express routers — URL mapping only
+├── services/        # Database queries (postService.js)
+├── utils/           # Logger, validators, error handler, password utils
+└── views/
+    ├── layouts/     # Base HTML shell (main.ejs)
+    ├── pages/       # Page templates
+    └── partials/    # Header and footer
+```
+
+---
+
+## Local Setup
 
 ### Prerequisites
 
-Before starting, make sure you have the following installed on your local machine:
+- Node.js 20+
+- PostgreSQL (local or hosted)
 
-1. [Node.js](https://nodejs.org) (v14 or above)
-2. A **PostgreSQL** database setup (either locally or using a cloud service like Render or Heroku)
-
-### Installing Dependencies
-
-To get the application up and running, clone the repository and install the required dependencies:
+### Install
 
 ```bash
-git clone https://github.com/yourusername/daily-journal.git
-cd daily-journal
+git clone https://github.com/Alzubi-Omar/daily_journal.git
+cd daily_journal
 npm install
 ```
 
-## Routes
+### Configure environment
 
-Here’s a quick overview of the available routes and their functions:
+Create a `.env` file in the project root:
 
-- **`/`**: **GET** - Displays the homepage with a welcome message.
-- **`/blogs`**: **GET** - Displays a list of all posts from the database.
-- **`/new`**:
-  - **GET** - Displays a form to create a new post.
-  - **POST** - Accepts a new post, hashes the password, and saves it to the database.
-- **`/blogs/:id`**: **GET** - Displays a specific post by ID.
-- **`/blogs/:id/edit`**:
-  - **GET** - Displays a password-protected page to edit the post.
-  - **POST** - After entering the correct password, users can edit the post's content.
-- **`/blogs/:id/delete`**:
-  - **GET** - Displays a password-protected page to delete the post.
-  - **POST** - After entering the correct password, the post is deleted.
+```env
+NODE_ENV=development
+PORT=3000
+DATABASE_URL=postgresql://username:password@localhost:5432/daily_journal
+SESSION_SECRET=minimum-32-character-random-string
+SALT_ROUNDS=10
+```
 
-## Running the Application Locally
-
-1. Start your PostgreSQL database (ensure it’s running).
-2. Run the following command to start the Express.js server locally:
+Generate a secure `SESSION_SECRET`:
 
 ```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```
+
+### Run
+
+```bash
+# Development — auto-reload
+npm run dev
+
+# Production
 npm start
 ```
 
-3. The application will now be running at http://localhost:3000.
+The app creates the `posts` table automatically on first run.
 
-### Security Notes
+---
 
-Two known vulnerabilities exist in `tar` and `@mapbox/node-pre-gyp` —
-both are transitive dependencies of `bcrypt`'s native build toolchain
-and are only invoked during `npm install`. They are not reachable at
-runtime and do not affect application security.
+## Routes
+
+| Method | Path                | Description              |
+| ------ | ------------------- | ------------------------ |
+| GET    | `/`                 | Homepage                 |
+| GET    | `/blogs`            | All posts                |
+| GET    | `/posts/new`        | Compose form             |
+| POST   | `/posts`            | Create post              |
+| GET    | `/posts/:id`        | Single post              |
+| GET    | `/posts/:id/edit`   | Password auth for edit   |
+| POST   | `/posts/:id/edit`   | Authenticate edit        |
+| POST   | `/posts/:id/update` | Save updated post        |
+| GET    | `/posts/:id/delete` | Password auth for delete |
+| POST   | `/posts/:id/delete` | Delete post              |
+
+---
+
+## Security
+
+This app was refactored through a structured security audit. Every decision is documented in the commit history on the `refactor/v2-security-improvements` branch.
+
+| Concern          | Implementation                                                                                                     |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------ |
+| SQL injection    | All queries use parameterized `$1, $2` placeholders — no string interpolation near the DB                          |
+| XSS              | User content rendered with `<%= %>` (escaped). `white-space: pre-wrap` handles line breaks — no raw HTML injection |
+| CSRF             | Double Submit Cookie pattern via `csrf-csrf` on every state-changing POST                                          |
+| Brute force      | `express-rate-limit` — 5 auth attempts per 15 min per IP                                                           |
+| Security headers | `helmet` — CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy                                         |
+| Session          | `httpOnly`, `sameSite: lax`, `secure` in production, named cookie                                                  |
+| Body size        | 10kb limit on urlencoded input prevents bcrypt CPU exhaustion                                                      |
+| Secrets          | App exits at startup if `SESSION_SECRET` or `DATABASE_URL` is missing                                              |
+
+### Known dependency note
+
+Two vulnerabilities exist in `tar` and `@mapbox/node-pre-gyp` — both are transitive dependencies of `bcrypt`'s native build toolchain, only invoked during `npm install`. They are not reachable at runtime and do not affect application security. No fix is available without replacing `bcrypt`.
+
+---
+
+## Refactor history
+
+This repo reflects an active progression from v1 to v2. The commit history on `refactor/v2-security-improvements` shows the full journey — each commit addresses one specific concern identified in a structured audit. The initial working app remains as the first commit for full context.
+
+---
+
+## License
+
+ISC
