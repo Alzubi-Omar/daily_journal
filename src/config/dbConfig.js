@@ -22,6 +22,6 @@ export const dbConfig = {
   port: dbUrl.port || 5432,
   ssl:
     process.env.NODE_ENV === "production"
-      ? { rejectUnauthorized: true }
+      ? { rejectUnauthorized: false } // for render
       : false,
 };
