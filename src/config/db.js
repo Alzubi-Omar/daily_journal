@@ -2,44 +2,38 @@ import pool from "./connection.js";
 import logger from "../utils/logger.js";
 
 /**
- * Starts the server, connects to the PostgreSQL database, and ensures the 'posts' table exists.
- *
- * This function does the following:
- * - Establishes a connection to the PostgreSQL database using a connection pool.
- * - Creates the 'posts' table if it doesn't exist.
- * - Releases the database connection after the operation.
+ * Initializes the database by ensuring the posts table exists.
+ * Called once at server startup.
  *
  * @async
- * @function startServer
- * @throws {Error} If the connection to the database fails, the application exits with an error.
+ * @function initializeDatabase
+ * @throws {Error} Exits the process if the database cannot be reached.
  */
 async function initializeDatabase() {
+  let client;
   try {
-    // Validate pool
-    if (!pool) throw new Error("Database pool is not initialized.");
-
-    // Connect to the database
-    const client = await pool.connect();
+    client = await pool.connect();
     logger.info("Connected to the database.");
 
-    // Create the 'posts' table if it doesn't exist
     await client.query(`
       CREATE TABLE IF NOT EXISTS public.posts (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(255) NOT NULL,
-        passkey VARCHAR(255) NOT NULL,
-        title VARCHAR(255) NOT NULL,
-        content TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        id         SERIAL PRIMARY KEY,
+        name       VARCHAR(255) NOT NULL,
+        passkey    VARCHAR(255) NOT NULL,
+        title      VARCHAR(255) NOT NULL,
+        content    TEXT         NOT NULL,
+        created_at TIMESTAMP    DEFAULT CURRENT_TIMESTAMP
       );
     `);
-    logger.info("Ensured the 'posts' table exists.");
 
-    client.release();
+    logger.info("Ensured the 'posts' table exists.");
   } catch (err) {
-    logger.error("Database initialization failed:", err);
+    logger.error(`Database initialization failed: ${err.message}`);
     process.exit(1);
+  } finally {
+    if (client) client.release();
   }
 }
 
+export { pool };
 export default initializeDatabase;

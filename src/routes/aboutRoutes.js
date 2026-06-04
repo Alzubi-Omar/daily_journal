@@ -1,4 +1,3 @@
-// aboutRoutes.js
 import express from "express";
 import { renderAboutPage } from "../controllers/aboutController.js";
 

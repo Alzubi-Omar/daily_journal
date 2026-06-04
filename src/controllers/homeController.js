@@ -1,21 +1,13 @@
-import { fetchAllPosts } from "../services/postService.js";
 import logger from "../utils/logger.js";
 import constants from "../utils/constants.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 /**
- * @fileoverview Renders the homepage with fetched posts and dynamic content.
- * @description Handles errors by rendering an error page.
- *
- * @async
- * @function renderHomePage
- * @param {Object} req - Express request object.
- * @param {Object} res - Express response object.
- * @returns {void}
+ * GET /
+ * Renders the homepage.
  */
 export async function renderHomePage(req, res) {
   try {
-    await fetchAllPosts();
     res.render("pages/home", {
       meta: {
         title: "Daily Journal - Home",
@@ -28,9 +20,9 @@ export async function renderHomePage(req, res) {
       startingContentHome: constants.startingContentHome,
       writeReadContentHome: constants.writeReadContentHome,
     });
-    logger.info("Successfully rendered the home page");
+    logger.info("Rendered home page");
   } catch (error) {
-    logger.error("Error rendering home page:", error);
-    errorHandler.renderError(res, 500, "Failed to load homepage", error);
+    logger.error(`Error rendering home page: ${error.message}`);
+    errorHandler.renderError(res, 500, "Failed to load homepage.", error);
   }
 }

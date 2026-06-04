@@ -1,5 +1,7 @@
 import express from "express";
+import { authLimiter } from "../middleware/rateLimiter.js";
 import {
+  renderComposePage,
   createPost,
   readPostById,
   editPostPage,
@@ -12,45 +14,51 @@ import {
 const router = express.Router();
 
 /**
- * Handles new post creation
- * @route POST /new
+ * GET /posts/new
+ * Renders the compose form for creating a new post.
  */
-router.post("/new", createPost);
+router.get("/new", renderComposePage);
 
 /**
- * Displays a single blog post by ID
- * @route GET /:id
+ * POST /posts
+ * Handles new post creation.
+ */
+router.post("/", createPost);
+
+/**
+ * GET /posts/:id
+ * Displays a single post by ID.
  */
 router.get("/:id", readPostById);
 
 /**
- * Renders post editing interface
- * @route GET /:id/edit
+ * GET /posts/:id/edit
+ * Renders the password auth page for editing.
  */
 router.get("/:id/edit", editPostPage);
 
 /**
- * Authenticates user for post editing
- * @route POST /:id/edit
+ * POST /posts/:id/edit
+ * Authenticates and renders the edit form.
  */
-router.post("/:id/edit", authenticatePostEdit);
+router.post("/:id/edit", authLimiter, authenticatePostEdit);
 
 /**
- * Updates existing post content
- * @route POST /:id/update
+ * POST /posts/:id/update
+ * Saves updated post content.
  */
 router.post("/:id/update", updatePostById);
 
 /**
- * Displays post deletion confirmation
- * @route GET /:id/delete
+ * GET /posts/:id/delete
+ * Renders the password auth page for deletion.
  */
 router.get("/:id/delete", confirmDeletePost);
 
 /**
- * Handles post deletion
- * @route POST /:id/delete
+ * POST /posts/:id/delete
+ * Authenticates and deletes the post.
  */
-router.post("/:id/delete", deletePost);
+router.post("/:id/delete", authLimiter, deletePost);
 
 export default router;

@@ -1,15 +1,14 @@
 <%- contentFor('body') %>
-
 <!-- Edit Container -->
 <article class="edit-container">
-  <!-- Edit Header -->
   <header class="edit-header">
     <h1>Edit Post</h1>
   </header>
 
-  <!-- Edit Post Form -->
-  <form action="/posts/<%= post.id %>/update/" method="POST" class="edit-form">
-    <!-- Title Input Field -->
+  <form action="/posts/<%= post.id %>/update" method="POST" class="edit-form">
+    <!-- CSRF token -->
+    <input type="hidden" name="x-csrf-token" value="<%= csrfToken %>" />
+
     <div class="form-group">
       <label for="title">Title</label>
       <input
@@ -22,7 +21,6 @@
       />
     </div>
 
-    <!-- Content Textarea -->
     <div class="form-group">
       <label for="content">Content</label>
       <textarea
@@ -31,21 +29,17 @@
         required
         class="form-textarea"
       >
-    <%= post.content %></textarea
+      <%= post.content %></textarea
       >
     </div>
 
-    <!-- Form Footer with Action Buttons -->
     <footer class="edit-footer">
-      <!-- Save Changes Button -->
       <button type="submit" class="btn-save">
-        <img src="/svgs/save_post.svg" alt="Save post" />
+        <img src="/svgs/save_post.svg" alt="" aria-hidden="true" />
         <span>Save Changes</span>
       </button>
-
-      <!-- Cancel Button -->
       <a href="/posts/<%= post.id %>" class="btn-cancel">
-        <img src="/svgs/cancel_edit.svg" alt="Cancel" />
+        <img src="/svgs/cancel_edit.svg" alt="" aria-hidden="true" />
         <span>Cancel</span>
       </a>
     </footer>
